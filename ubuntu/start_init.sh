@@ -6,3 +6,5 @@ hostnamectl set-hostname ubuntu1.s4v3.net
 apt update && upgrade -y
 hostname
 
+echo "go and change the FQDN in hetzner > server > networking"
+
