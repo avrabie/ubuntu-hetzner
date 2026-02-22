@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - gateway-namespace.yaml
-  - gateway-traefik.yaml
+  - gateway-traefik-letsencrypt.yaml
 #  - traefik-middleware.yaml
 
 namespace: gateway-namespace
