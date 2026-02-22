@@ -39,3 +39,11 @@ Then ssh@ubuntu1.s4v3.net
 mkdir -p $HOME/.kube
 sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+On your local machine
+scp moldo@ubuntu1.s4v3.net:~/.kube/config ~/.kube/hetzner-cluster
+vim ~/.kube/hetzner-cluster
+change the server to the IP of the node (from 127.0.0.1 to the IP of the node: ubuntu1.s4v3.net)
+export KUBECONFIG=~/.kube/hetzner-cluster
+
+Enjoy!
