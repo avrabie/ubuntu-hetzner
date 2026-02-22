@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - nginx-deployment.yaml
   - nginx-service.yaml
+  - gateway.yaml
   - httproute.yaml
 

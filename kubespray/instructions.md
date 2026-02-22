@@ -10,7 +10,7 @@ source kubespray-venv/bin/activate
 
 In Kubespray directory
 cp inventory/sample/inventory.ini inventory/hezner1/inventory.ini
-modify it 
+modify it - included a copy of inventory.ini and cluster-variable.yaml
 
 ```ini
 [kube_control_plane]
