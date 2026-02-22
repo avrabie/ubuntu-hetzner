@@ -49,6 +49,16 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https
+      port: 8443 # Matches Traefik's internal 'websecure' port (8443)
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: example-com-tls # You'll need to create this Secret later
+      allowedRoutes:
+        namespaces:
+          from: All
 ```
 Apply it:
 ```bash
@@ -87,13 +97,15 @@ Run this on your ubuntu1 node:
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 30081
 ```
 
+## Works on single node k8s cluster
 #### Option B: Use Host Port mapping (Recommended for Single-Node)
-Reconfigure Traefik to map the host's port 80 directly to the Traefik pod.
+Reconfigure Traefik to map the host's ports 80 and 443 directly to the Traefik pod.
 ```bash
 helm upgrade traefik traefik/traefik \
   --namespace traefik \
   --set providers.kubernetesGateway.enabled=true \
   --set ports.web.hostPort=80 \
+  --set ports.websecure.hostPort=443 \
   --set service.type=ClusterIP
 ```
 

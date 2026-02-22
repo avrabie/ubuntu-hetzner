@@ -12,3 +12,13 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https
+      port: 8443 # Matches Traefik's internal 'websecure' port (8443)
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: example-com-tls # You'll need to create this Secret later
+      allowedRoutes:
+        namespaces:
+          from: All
