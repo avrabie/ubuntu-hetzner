@@ -55,7 +55,7 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - name: example-com-tls # You'll need to create this Secret later
+          - name: s4v3-net-tls # You'll need to create this Secret later
       allowedRoutes:
         namespaces:
           from: All

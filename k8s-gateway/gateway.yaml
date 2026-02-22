@@ -7,7 +7,7 @@ spec:
   gatewayClassName: traefik
   listeners:
     - name: http
-      port: 8000
+      port: 8000 # Matches Traefik's internal 'web' port
       protocol: HTTP
       allowedRoutes:
         namespaces:
@@ -18,7 +18,7 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - name: example-com-tls # You'll need to create this Secret later
+          - name: s4v3-net-tls
       allowedRoutes:
         namespaces:
           from: All
