@@ -1,0 +1,50 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: global-gateway
+  namespace: gateway-namespace
+  annotations:
+    # This annotation tells cert-manager to use the specified Issuer
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: http
+      port: 8000
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-s4v3-net
+      hostname: "s4v3.net"
+      port: 8443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: s4v3-net-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-auth-s4v3-net
+      hostname: "auth.s4v3.net"
+      port: 8443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: s4v3-net-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-minio-s4v3-net
+      hostname: "minio.s4v3.net"
+      port: 8443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: s4v3-net-tls
+      allowedRoutes:
+        namespaces:
+          from: All
