@@ -15,3 +15,12 @@ ssh-copy-id moldo@ubuntu1.s4v3.net
 ssh-copy-id root@ubuntu1.s4v3.net
 
 
+# Create mount points for PVs
+mkdir -p /mnt/minio-data/minio
+mkdir -p /mnt/minio-data/postgres
+mkdir -p /mnt/keycloak-data/keycloak
+mkdir -p /mnt/keycloak-data/postgres
+
+Give permissions to /mnt/
+sudo chmod -R 777 /mnt/keycloak-data
+sudo chmod -R 777 /mnt/minio-data
