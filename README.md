@@ -34,7 +34,8 @@ I'm always looking for feedback or a bit of *convivial* collaboration. Whether y
 This project is an evolving artifact of engineering exploration, and I'd love to hear your thoughts.
 
 Stay curious,
-*A Senior Software Engineer (and YAML wrangler)*
+*Mr. Nobody*
 
 ---
-*If you find a bug, it's a "feature" I'm testing. If you find a security hole, please don't tell the internet—tell me!*
+*If you find a bug, it's a "feature" I'm testing. 
+If you find a security hole, let's exploit it 2gether!*
