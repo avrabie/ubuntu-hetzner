@@ -22,20 +22,72 @@ Let's Encrypt does all the heavy lifting, giving us automated, valid certificate
 ### The Fruit of the Labor: [s4v3.net](https://s4v3.net)
 The real-world case study for all this infrastructure is [s4v3.net](https://s4v3.net). It's a platform I built to allow users to save and share files—docs, music, movies, you name it. It even has ephemeral links for those "this message will self-destruct" sharing moments. It's been a *salubrious* experience seeing it all come together.
 
-### Why You Might Care
-If you're a developer (especially if you're coming from the Java world) and you're looking for a "DevOps Rosetta Stone," this repository is for you. It’s a playground to test:
-*   Cloud-native patterns without the corporate overhead.
-*   Persistent Volume Claims (PVC) and local storage (e.g., Minio, PostgreSQL).
-*   The operational reality of managing your own K8s cluster.
-
 ### Let's Chat!
-I'm always looking for feedback or a bit of *convivial* collaboration. Whether you have ideas for optimizing the Ansible playbooks, refining the Gateway API configurations, or just want to talk shop about multi-region scaling and advanced GitOps, I’m all ears!
+I'm always looking for feedback or a bit of *convivial* collaboration. 
 
-This project is an evolving artifact of engineering exploration, and I'd love to hear your thoughts.
 
-Stay curious,
-*Mr. Nobody*
+# The Path to Enlightenment (Getting Started)
 
----
-*If you find a bug, it's a "feature" I'm testing. 
-If you find a security hole, let's exploit it 2gether!*
+Should you feel a *proclivity* for high-stakes YAML and want to replicate this setup on your own Hetzner VPS, here is the blueprint. 
+
+**Assumptions:**
+*   You have a VPS with a public IPv4 address.
+*   Reverse DNS (rDNS) is configured to your domain (e.g., `s4v3.net`).
+*   A DNS A record is pointing your domain to the VPS IP.
+
+#### 1. The Genesis: Server Preparation
+First, we must move away from the `root` user to a more *civilized* existence. Connect to your VPS and run:
+
+```bash
+# Set your hostname to match your domain
+hostnamectl set-hostname ubuntu1.s4v3.net
+
+# Create your user (let's call him 'moldo') and grant sudo powers
+adduser moldo
+usermod -aG sudo moldo
+```
+
+For the full list of initialization steps, including mounting points for our Persistent Volumes and SSH key distribution, refer to my [Initialization Guide](ubuntu/start_init.md).
+
+#### 2. Orchestrating the Chaos: Kubespray
+Now, we deploy the cluster. We use the *venerable* Kubespray to handle the heavy lifting.
+
+```bash
+# Clone the repository and checkout the stable version
+git clone https://github.com/kubernetes-sigs/kubespray.git
+cd kubespray
+git checkout tags/v2.30.0
+
+# Prepare the environment
+python3 -m venv kubespray-venv
+source kubespray-venv/bin/activate
+pip3 install -U -r requirements.txt
+
+# Run the playbook (pointing to the inventory provided in this repo)
+ansible-playbook -i inventory/hezner1/inventory.ini \
+  -e @inventory/hezner1/cluster-variable.yaml \
+  --become --ask-become-pass \
+  -u moldo \
+  cluster.yml
+```
+
+Detailed inventory configurations and post-install `kubeconfig` dance steps are documented in the [Kubespray Instructions](kubespray/instructions.md).
+
+#### 3. The Gateway to the World: Traefik & HTTPS
+With the cluster breathing, we need to handle traffic. We use the **Gateway API** for a more *perspicacious* routing experience.
+
+1.  **Install Traefik** as your Gateway controller.
+2.  **Install cert-manager** to *obviate* the need for manual certificate renewals.
+
+```bash
+# Install cert-manager
+helm install cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --set crds.enabled=true \
+  --set config.enableGatewayAPI=true
+```
+
+3.  **Apply the ClusterIssuer and Gateway**: Use the configurations found in `https/letsencrypt.md` to establish your `ClusterIssuer` and update your `Gateway` to use Let's Encrypt. 
+
+You can find the step-by-step HTTPS configuration [right here](https/letsencrypt.md).
