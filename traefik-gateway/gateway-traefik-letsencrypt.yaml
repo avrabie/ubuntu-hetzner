@@ -48,3 +48,14 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-blog-s4v3-net
+      hostname: "blog.s4v3.net"
+      port: 8443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: s4v3-net-tls
+      allowedRoutes:
+        namespaces:
+          from: All
